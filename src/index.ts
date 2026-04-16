@@ -1,3 +1,3 @@
 export { toWareki } from "./to-wareki";
-export { fromWareki } from "./from-wareki";
+export { toWestern } from "./to-western";
 export type { WarekiResult } from "./types";

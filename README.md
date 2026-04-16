@@ -25,7 +25,7 @@ npm install wareki-converter
 ## Quick Start
 
 ```ts
-import { toWareki, fromWareki } from "wareki-converter";
+import { toWareki, toWestern } from "wareki-converter";
 
 // Western → Wareki
 const result = toWareki("2024-03-08");
@@ -34,7 +34,7 @@ result.kansuji();  // "令和六年三月八日"
 result.short();    // "R6.3.8"
 
 // Wareki → Western
-fromWareki("令和6年3月8日"); // Date(2024, 2, 8)
+toWestern("令和6年3月8日"); // Date(2024, 2, 8)
 ```
 
 ## Usage
@@ -70,16 +70,16 @@ toWareki("2019-05-01").kansuji();  // "令和元年五月一日"
 toWareki("2019-05-01").short();    // "R1.5.1"
 ```
 
-### `fromWareki` — Wareki to Western
+### `toWestern` — Wareki to Western
 
 Parses any of the three formats and returns a `Date`.
 
 ```ts
-import { fromWareki } from "wareki-converter";
+import { toWestern } from "wareki-converter";
 
-fromWareki("令和6年3月8日");   // Date(2024, 2, 8)
-fromWareki("令和六年三月八日"); // Date(2024, 2, 8)
-fromWareki("R6.3.8");         // Date(2024, 2, 8)
+toWestern("令和6年3月8日");   // Date(2024, 2, 8)
+toWestern("令和六年三月八日"); // Date(2024, 2, 8)
+toWestern("R6.3.8");         // Date(2024, 2, 8)
 ```
 
 ## API Reference
@@ -96,7 +96,7 @@ Converts a Western date to wareki.
 
 **Throws** `Error` if the date is before the Meiji era (1868-09-08) or if the string format is invalid.
 
-### `fromWareki(wareki: string): Date`
+### `toWestern(wareki: string): Date`
 
 Parses a wareki string and returns a `Date`.
 
