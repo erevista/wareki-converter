@@ -22,6 +22,18 @@ function formatYearKansuji(year: number): string {
   return toKansuji(year);
 }
 
+const K = "〇一二三四五六七八九".split("");
+
+function toKansuji(n: number): string {
+  if (n < 10) return K[n];
+  if (n === 10) return "十";
+  const t = Math.floor(n / 10);
+  const o = n % 10;
+  const suffix = o ? K[o] : "";
+  if (t === 1) return `十${suffix}`;
+  return `${K[t]}十${suffix}`;
+}
+
 export function toWareki(input: Date | string): WarekiResult {
   const date = parseDate(input);
   const era = findEra(date);
@@ -36,16 +48,4 @@ export function toWareki(input: Date | string): WarekiResult {
       `${era.name}${formatYearKansuji(year)}年${toKansuji(month)}月${toKansuji(day)}日`,
     short: () => `${era.abbreviation}${year}.${month}.${day}`,
   };
-}
-
-const K = "〇一二三四五六七八九".split("");
-
-function toKansuji(n: number): string {
-  if (n < 10) return K[n];
-  if (n === 10) return "十";
-  const t = Math.floor(n / 10);
-  const o = n % 10;
-  const suffix = o ? K[o] : "";
-  if (t === 1) return `十${suffix}`;
-  return `${K[t]}十${suffix}`;
 }

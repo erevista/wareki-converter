@@ -10,7 +10,27 @@ const RE_DEF = new RegExp(`^(${E})(元|\\d+)年(\\d+)月(\\d+)日$`);
 const RE_SHORT = /^([MTSHR])(\d+)\.(\d+)\.(\d+)$/;
 const RE_KAN = new RegExp(`^(${E})(元|${KN})年(${KN})月(${KN})日$`);
 
-export function fromWareki(wareki: string): Date {
+const KM: Record<string, number> = {
+  一: 1, 二: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9,
+};
+
+function kanNum(s: string): number {
+  if (s === "十") return 10;
+  let r = 0, i = 0;
+  while (i < s.length) {
+    const c = s[i];
+    if (c === "十") {
+      if (r === 0) r = 1;
+      r *= 10;
+      i++;
+      if (i < s.length && KM[s[i]]) { r += KM[s[i]]; i++; }
+    } else if (KM[c]) { r = KM[c]; i++; }
+    else break;
+  }
+  return r;
+}
+
+export function toWestern(wareki: string): Date {
   let era: Era | undefined;
   let year: number, month: number, day: number;
 
@@ -46,24 +66,4 @@ export function fromWareki(wareki: string): Date {
   if (year <= 0) throw new Error(`Invalid year in wareki string: "${wareki}"`);
 
   return new Date(era.startDate.getFullYear() + year - 1, month - 1, day);
-}
-
-const KM: Record<string, number> = {
-  一: 1, 二: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9,
-};
-
-function kanNum(s: string): number {
-  if (s === "十") return 10;
-  let r = 0, i = 0;
-  while (i < s.length) {
-    const c = s[i];
-    if (c === "十") {
-      if (r === 0) r = 1;
-      r *= 10;
-      i++;
-      if (i < s.length && KM[s[i]]) { r += KM[s[i]]; i++; }
-    } else if (KM[c]) { r = KM[c]; i++; }
-    else break;
-  }
-  return r;
 }
