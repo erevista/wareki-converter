@@ -1,0 +1,43 @@
+classDiagram
+    class WarekiResult {
+        <<interface>>
+        +standard() string
+        +kansuji() string
+        +short() string
+    }
+
+    class Era {
+        <<interface>>
+        +name: string
+        +abbreviation: string
+        +startDate: Date
+    }
+
+    class Eras {
+        <<module>>
+        +ERAS: Era[]
+        +findEra(date: Date) Era
+    }
+
+    class ToWareki {
+        <<module>>
+        +toWareki(input: Date | string) WarekiResult
+        -parseDate(input: Date | string) Date
+        -formatYear(year: number) string
+        -formatYearKansuji(year: number) string
+        -toKansuji(n: number) string
+    }
+
+    class ToWestern {
+        <<module>>
+        +toWestern(wareki: string) Date
+        -kanNum(s: string) number
+        -BY_NAME: Map~string, Era~
+        -BY_ABBR: Map~string, Era~
+    }
+
+    ToWareki ..> WarekiResult : returns
+    ToWareki ..> Eras : uses findEra
+    ToWestern ..> Eras : uses ERAS
+    Eras --> Era : contains
+    ToWestern --> Era : references
